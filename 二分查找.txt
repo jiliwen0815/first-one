@@ -1,0 +1,87 @@
+#include<iostream>
+#include<vector>
+#include<time.h>
+using namespace std;
+typedef vector<int> intArr;
+int Search(const intArr& a, int key, size_t left, size_t right)
+{
+	if (left >=(int) a.size() || right >= a.size()) return -1;
+
+	while (left <= right)
+	{
+		int mid = left+((right-left)/2+1);
+		if (key == a[mid])
+			return mid;
+		else{
+			if (key < a[mid])
+				right = mid - 1;
+			else
+				left = mid + 1;
+		}
+	}
+	return -1;
+}
+int SearchR(const intArr& a, int key, size_t left, size_t right)
+{
+	if (left >= (int)a.size() || right >= (int)a.size()) return -1;
+	if (left > right) 	return -1;
+	else
+	{
+	int	mid = left + ((right - left) /2+1);
+		if (key == a[mid])
+			return mid;
+		else
+		{
+			if (key < a[mid])
+				return SearchR(a, key, left, mid - 1);
+			else
+				return SearchR(a, key,right,mid + 1);
+		}
+	}
+}
+void testProc(const intArr &a, size_t c)
+{
+	size_t left, right;
+	int key;
+	clock_t start, end;
+	start = clock();
+	for (size_t i = 0; i < c; i++)
+	{
+		left = rand()*(rand() % 20);
+		right = rand()*(rand() % 20);
+		key = rand()*(rand() % 20);
+		Search(a, key, left, right);
+	}
+	end = clock();
+	cout <<"Search: "<< end - start << endl;
+}
+void testProcR(const intArr &a,size_t c)
+{
+	size_t left,right;
+	int key;
+	clock_t start, end;
+	start = clock();
+	for (size_t i = 0; i < c; i++)
+	{
+		left = rand()*(rand() % 20);
+	    right = rand()*(rand() % 20);
+		key= rand()*(rand() % 20);
+		SearchR(a, key, left, right);
+	}
+	end = clock();
+	cout <<"SearchR: "<< end - start << endl;
+}
+int main()
+{
+	srand((size_t)time(NULL));
+	intArr a;
+	size_t c = rand() *(rand()%200);
+	for (int i = 0; i < 1000000; i++)
+	{
+		a.push_back(i);
+	}
+	cout << "²éÕÒ´ÎÊý: " << c << endl;
+	testProc(a, c);
+	testProcR(a, c);
+	return 0;
+}
